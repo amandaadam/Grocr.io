@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
             txtView.setText(txt);
 
            for(FirebaseVisionText.Line line : block.getLines()){
-               txt += line.getText() +"/n";
+               txt += line.getText();
             }
 
 

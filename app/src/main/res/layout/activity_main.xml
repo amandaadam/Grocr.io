@@ -38,18 +38,18 @@
         android:layout_width="match_parent"
         android:layout_height="729dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="0dp" />
+        android:layout_marginBottom="-278dp" />
 
     <Button
         android:id="@+id/cropper"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="157dp"
-        android:layout_marginEnd="166dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginStart="166dp"
+        android:layout_marginEnd="157dp"
+        android:layout_marginBottom="12dp"
         android:onClick="onChooseFile"
         android:text="Crop" />
 </RelativeLayout>
