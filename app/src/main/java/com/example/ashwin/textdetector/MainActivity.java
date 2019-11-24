@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.Image;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -23,11 +24,14 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextDetector;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
+
+
 
     private Button snapBtn;
     private Button detectBtn;
@@ -36,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap imageBitmap;
     Input myInput;
     DatabaseReference reff;
+
+    Uri mImageUri;
+    private Button cropper;
+    private ImageView myImage;
 
 
     @Override
@@ -65,9 +73,17 @@ public class MainActivity extends AppCompatActivity {
                 detectTxt();
             }
         });
+
+        cropper = findViewById(R.id.cropper);
+        //myImage = findViewById(R.id.myImage);
     }
 
 
+
+    public void onChooseFile(View v) {
+
+        CropImage.activity().start(MainActivity.this);
+    }
 
 
 
@@ -112,6 +128,22 @@ public class MainActivity extends AppCompatActivity {
             imageBitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(rotateImage(imageBitmap,90));
         }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if(resultCode == RESULT_OK) {
+                mImageUri = result.getUri();
+                imageView.setImageURI(mImageUri);
+            }
+
+            else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+
+                Exception e = result.getError();
+                Toast.makeText(this, "Possible error is : "+ e,Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 
     private void detectTxt() {
@@ -149,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
             txtView.setText(txt);
 
            for(FirebaseVisionText.Line line : block.getLines()){
-               txt += line.getText() +"/n";
+               txt += line.getText();
             }
 
 
